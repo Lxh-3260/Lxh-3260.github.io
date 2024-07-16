@@ -1,8 +1,8 @@
 title: Xinghao Li's Personal Website
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  I am a master student in East China Normal University majored in Software Engineering, 
+  specializing in Non-Volatile Memory. 
+  I am currently interning in backend development at Youtu Lab, Tencent, Shanghai.
 permalink: ':title/'
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "lxh-3260.github.io" # the base hostname & protocol for your site, e.g. http://example.com
@@ -10,7 +10,7 @@ site-twitter: #if your site has a twitter account, enter it here
 
 # Author Settings
 author: Xinghao Li # add your name
-author-img: david-freeman.jpg # add your photo
+author-img: xinghaoli.jpg # add your photo
 about-author: I am a web developer focusing on front-end development. Always hungry to keep learning. # add description
 social-twitter: # add your Twitter handle
 social-facebook: # add your Facebook handle
