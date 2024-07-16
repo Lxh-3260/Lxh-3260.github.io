@@ -1,2 +1,3 @@
 # Lxh-3260.github.io
-personal website for blog recording
+Personal website for blog recording.
+You can have access by [Lxh-3260.github.io](https://Lxh-3260.github.io)
