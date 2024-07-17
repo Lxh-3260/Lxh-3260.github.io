@@ -884,7 +884,7 @@ table tfoot td {
 }
 
 .wrapper {
-  max-width: 1250px;
+  max-width: 1960px;
   position: relative;
 }
 
@@ -1106,6 +1106,7 @@ footer .copyright {
   margin: 0;
 }
 
+/* - - - - - - - - - - Post Page Styles - - - - - - - - - - */
 .post {
   width: 100%;
   max-width: 100%;
@@ -1200,7 +1201,6 @@ a.newer-posts:hover {
           transform: translateX(-5px);
 }
 
-/* - - - - - - - - - - Post Page Styles - - - - - - - - - - */
 .wrap-content {
   padding: 20px;
 }
