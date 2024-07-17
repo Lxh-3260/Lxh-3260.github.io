@@ -12,7 +12,7 @@ tags: [Website, Software] # add tag
 2. 操作系统：macos Sonoma 14.5
 3. 科学上网（涉及一些包和依赖的下载，找镜像源也可以，直接执行`ALL_PROXY=http://127.0.0.1:7890`走代理下载更快，其中127.0.0.1是本机回环地址，7890是clash的端口号，其他代理客户端填自己对应的代理端口即可，例如v2rayN是10809）
 
-![Macbook]({{site.baseurl}}/assets/img/mac.jpg)
+<!-- ![Macbook]({{site.baseurl}}/assets/img/mac.jpg) -->
 
 ## 搭建基础
 1. 按照如下顺序github - your profile - repositories - new创建一个新的项目，其中repository name必须写自己的github账户名.github.io
@@ -29,7 +29,6 @@ git config --global https.proxy http://127.0.0.1:7890
 1. 首先要介绍一下Jekyll，它提供了很多网站模板，可以让我们不用自己去设计个人网页的前端界面，同时还可以执行本地修改后直接预览，执行`bundle exec jekyll serve --trace`，可以在本机的浏览器输入`http://127.0.0.1:4000/`预览修改结果，不用等`git push`后执行流水线的deploy action操作，大大提高了网站维护的效率。同时它基本是开箱即用，不必预先学习jekyll语法，就能使得非前端程序员也能有一个美观的个人网页。
 
 2. 配置jekyll环境首先需要下载ruby，mac自带了一个ruby，但是版本太低不能使用，可以`command+space`输入terminal打开终端，输入`ruby -v`查看ruby版本，发现是2.x版本，所以需要自己下载一个3.x的ruby。执行，会报错`zsh: command not found: brew`，这是因为没有下载brew包管理器，大陆地区直接下载brew会报网络错误，这里就要用到代理了，改为执行就可以正常下载brew了。
-
 ```shell
 # 下载ruby，提示没有brew包管理语句
 brew install ruby
@@ -49,7 +48,6 @@ source ～/.zshrc
 ```
 
 3. 下载jekyll，这里用的镜像源下载的，否则会超时
-
 ```shell
 # 将RubyGems 的源替换为国内镜像，以解决下载超时
 gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
@@ -66,7 +64,6 @@ jekyll --version
 ```
 
 4. 新建Jekyll项目，并安装bundle依赖项（这里需要换源），启动Jekyll项目后就可以在本地的4000端口及时地查看修改了
-
 ```shell
 # 将 RubyGems 的源更换为国内镜像
 bundle config mirror.https://rubygems.org https://gems.ruby-china.com
@@ -80,10 +77,13 @@ bundle exec jekyll serve --trace
 bundle exec jekyll clean
 ```
 
-5. 去[Jekyll官网](http://jekyllthemes.org/)找一个模版，点击demo可以查看每个模版的demo，download可以下载其源码，解压到本地，运行模版并把模版修改成自己想要的样子即可，我用的是[Flexible Jekyll](http://jekyllthemes.org/themes/flexible-jekyll/)这个模版。
+5. 去[Jekyll官网](http://jekyllthemes.org/)找一个模版，点击demo可以查看每个模版的demo，download可以下载其源码，解压到本地，运行模版并把模版修改成自己想要的样子即可，我用的是[Flexible Jekyll](http://jekyllthemes.org/themes/flexible-jekyll/)这个模版。将源码push到远程的github.io仓库，github会自动执行github-pages deployments，再次访问网页即可完成部署。
 
 6. 拓展：Jekyll的模版一般有几个模块，常用的有如下几个模块:
 * _config.yaml:用于进行一些模块基础信息配置
 * _layouts:每个模块的布局，例如post模块、main模块
 * _posts:每一篇博客就是一篇post，按照模版的样式新建post即可
 * assets:存放图片资源、各个模块的css和字体资源
+
+>值得一提的是，如果想实现评论功能，需要去注册一个disqus，并在_config.yaml中配置相关的文件。
+如果想实现浏览访问计数，需要用到百度的api，这里我并没有实现，故不做赘述。
