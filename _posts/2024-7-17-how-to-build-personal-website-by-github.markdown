@@ -28,6 +28,62 @@ git config --global https.proxy http://127.0.0.1:7890
 ## Jekyll环境配置
 1. 首先要介绍一下Jekyll，它提供了很多网站模板，可以让我们不用自己去设计个人网页的前端界面，同时还可以执行本地修改后直接预览，执行`bundle exec jekyll serve --trace`，可以在本机的浏览器输入`http://127.0.0.1:4000/`预览修改结果，不用等`git push`后执行流水线的deploy action操作，大大提高了网站维护的效率。同时它基本是开箱即用，不必预先学习jekyll语法，就能使得非前端程序员也能有一个美观的个人网页。
 
-2. 配置jekyll环境首先需要下载ruby，mac自带了一个ruby，但是版本太低不能使用，可以`command+space`输入terminal打开终端，输入`ruby -v`查看ruby版本，发现时2.x，所以需要自己下载一个3.x的ruby。执行`brew install ruby`，会报错`zsh: command not found: brew`，这是因为没有下载brew包管理器，大陆地区直接下载brew`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`会报网络错误，这里就要用到代理了，改为执行`ALL_PROXY=http://127.0.0.1:7890 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)`就可以正常下载brew了。
+2. 配置jekyll环境首先需要下载ruby，mac自带了一个ruby，但是版本太低不能使用，可以`command+space`输入terminal打开终端，输入`ruby -v`查看ruby版本，发现是2.x版本，所以需要自己下载一个3.x的ruby。执行，会报错`zsh: command not found: brew`，这是因为没有下载brew包管理器，大陆地区直接下载brew会报网络错误，这里就要用到代理了，改为执行就可以正常下载brew了。
 
-3. 
+```shell
+# 下载ruby，提示没有brew包管理语句
+brew install ruby
+# 下载brew后再下载一次ruby
+ALL_PROXY=http://127.0.0.1:7890 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# 将brew加入环境变量
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/xinghaoli/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+# 验证brew是否生效
+brew help
+# 下载ruby
+brew install ruby
+# 出现提示，如果要使用新安装的ruby需要执行这个命令行语句，将其加入环境变量：
+echo 'export PATH="/opt/homebrew/opt/ruby/bin:$PATH"' >> ~/.zshrc
+# 使环境变量生效
+source ～/.zshrc
+```
+
+3. 下载jekyll，这里用的镜像源下载的，否则会超时
+
+```shell
+# 将RubyGems 的源替换为国内镜像，以解决下载超时
+gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
+gem sources -l
+# 安装jekyll
+gem install --user-install bundler jekyll
+# 修改gem的运行环境
+echo 'export PATH="$HOME/.gem/ruby/3.3.0/bin:$PATH"' >> ~/.zshrc
+echo 'export PATH="$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH"' >> ~/.zshrc
+source ～/.zshrc
+# 确认gem环境已安装
+gem environment
+jekyll --version
+```
+
+4. 新建Jekyll项目，并安装bundle依赖项（这里需要换源），启动Jekyll项目后就可以在本地的4000端口及时地查看修改了
+
+```shell
+# 将 RubyGems 的源更换为国内镜像
+bundle config mirror.https://rubygems.org https://gems.ruby-china.com
+# 安装 Gemfile 中指定的所有依赖
+bundle install
+# 新建jekyll项目
+jekyll new site
+# 启动jekyll项目
+bundle exec jekyll serve --trace
+# 有时有奇怪的错误，可以清一下jekyll缓存
+bundle exec jekyll clean
+```
+
+5. 去[Jekyll官网](http://jekyllthemes.org/)找一个模版，点击demo可以查看每个模版的demo，download可以下载其源码，解压到本地，运行模版并把模版修改成自己想要的样子即可，我用的是[Flexible Jekyll](http://jekyllthemes.org/themes/flexible-jekyll/)这个模版。
+
+6. 拓展：Jekyll的模版一般有几个模块，常用的有如下几个模块:
+* _config.yaml:用于进行一些模块基础信息配置
+* _layouts:每个模块的布局，例如post模块、main模块
+* _posts:每一篇博客就是一篇post，按照模版的样式新建post即可
+* assets:存放图片资源、各个模块的css和字体资源
