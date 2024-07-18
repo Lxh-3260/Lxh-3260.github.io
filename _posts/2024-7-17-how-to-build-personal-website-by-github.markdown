@@ -87,3 +87,21 @@ bundle exec jekyll clean
 
 >值得一提的是，如果想实现评论功能，需要去注册一个disqus，并在_config.yaml中配置相关的文件。
 如果想实现浏览访问计数，需要用到百度的api，这里我并没有实现，故不做赘述。
+
+7. 如果想在博客中展示公式，那么需要额外引入script脚本
+```shell
+# 在_config.yaml中加入下面几行配置
+# Build Settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  mathjax:
+    cdn: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# 在_include/head.html中head模块加入下面这一行
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+
+# 重新运行网页，加载script脚本
+bundle exec jekyll serve
+```

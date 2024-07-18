@@ -27,6 +27,12 @@ analytics: # Google Analytics
 
 # Build Settings
 markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  mathjax:
+    cdn: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
 plugins:
   - jekyll-sitemap
   - jekyll-paginate
