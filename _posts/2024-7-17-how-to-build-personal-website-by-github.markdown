@@ -84,11 +84,11 @@ bundle exec jekyll clean
 * _layouts:每个模块的布局，例如post模块、main模块
 * _posts:每一篇博客就是一篇post，按照模版的样式新建post即可
 * assets:存放图片资源、各个模块的css和字体资源
-
 >值得一提的是，如果想实现评论功能，需要去注册一个disqus，并在_config.yaml中配置相关的文件。
 如果想实现浏览访问计数，需要用到百度的api，这里我并没有实现，故不做赘述。
 
 7. 如果想在博客中展示公式，那么需要额外引入script脚本
+
 ```shell
 # 在_config.yaml中加入下面几行配置
 # Build Settings
