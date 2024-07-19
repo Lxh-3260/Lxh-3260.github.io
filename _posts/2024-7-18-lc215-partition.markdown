@@ -142,3 +142,28 @@ public:
 ```
 
 python的heap写法留个坑以后再补，今天先下班了- -！
+
+
+补档！可以分别测试前k个元素原地建堆和依次读取前k个建堆，如果k较大时有: $$ O(k) < O(k \log k) $$
+
+```python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # 使用前k个元素创建一个小顶堆
+        min_heap = nums[:k]
+        heapq.heapify(min_heap)
+        # min_heap = []
+        # for i in range(k):
+        #     heappush(min_heap, nums[i])
+        for i in range(k, len(nums)):
+            if nums[i] > min_heap[0]:
+                heappop(min_heap)
+                heappush(min_heap, nums[i])
+        return min_heap[0]
+```
+
+前k个元素原地建堆
+![lc215py1]({{site.baseurl}}/assets/img/lc215py1.png)
+
+依次建堆
+![lc215py2]({{site.baseurl}}/assets/img/lc215py2.png)
