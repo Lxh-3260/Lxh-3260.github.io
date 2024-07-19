@@ -162,8 +162,8 @@ class Solution:
         return min_heap[0]
 ```
 
-前k个元素原地建堆
+## 前k个元素原地建堆
 ![lc215py1]({{site.baseurl}}/assets/img/lc215py1.png)
 
-依次建堆
+## 依次建堆
 ![lc215py2]({{site.baseurl}}/assets/img/lc215py2.png)
