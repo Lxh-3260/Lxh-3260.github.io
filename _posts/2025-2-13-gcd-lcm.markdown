@@ -1,0 +1,41 @@
+---
+layout: post
+title: GCD and LCM
+date: 2025-2-13 15:00:00 +08:00
+description: # Add post description (optional)
+img: # Add image post (optional)
+tags: [Math, C++] # add tag
+---
+
+## GCD and LCM
+
+GCD (Greatest Common Divisor) and LCM (Least Common Multiple) are two important concepts in mathematics. They are used to find the greatest common factor or the smallest multiple of two or more numbers.
+
+```c++
+#include <iostream>
+using namespace std;
+
+int gcd(int a, int b) {
+    while(b != 0){
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int lcm(int a, int b) {
+    return (a * b) / gcd(a, b);
+}
+
+int main() {
+    int a, b;
+    cout << "Enter two numbers: ";
+    cin >> a >> b;
+    cout << "GCD of " << a << " and " << b << " is " << gcd(a, b) << endl;
+    cout << "LCM of " << a << " and " << b << " is " << lcm(a, b) << endl;
+    return 0;
+}
+```
+
+In the above code, the `gcd` function uses the Euclidean algorithm to find the greatest common divisor of two numbers. The `lcm` function first finds the GCD of the two numbers and then multiplies them to find the LCM.
