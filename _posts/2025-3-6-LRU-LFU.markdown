@@ -1,0 +1,120 @@
+---
+layout: post
+title: LRU and LFU
+date: 2025-3-6 22:00:00 +08:00
+description: # Add post description (optional)
+img: # Add image post (optional)
+tags: [Simulation, C++] # add tag
+---
+
+## LFU
+题目链接 ：https://leetcode.cn/problems/lfu-cache/description/
+
+LFU是按照使用频率对kv对排序，当cache满时，淘汰最不经常使用的kv对。
+
+1. 需要维护n个频次的双向链表
+2. 需要维护一个key_to_node的哈希表，key标识key，value标识对应的双向链表的节点
+3. 需要维护一个freq_to_head的哈希表，key标识频次，value标识对应频次的双向链表的头节点
+4. 维护一个min_freq，表示最小频次，当新插入kv对时，更新min_freq = 1，当最小的频次的链表为空时，min_freq++，这样可以通过freq_to_head[min_freq]来获取最小频次的链表头节点，然后删除freq_to_head[min_freq]->pre即可实现cache容量写满时的淘汰操作。
+```c++
+class LFUCache {
+private:
+    struct ListNode{
+        int key;
+        int val;
+        int freq;
+        ListNode *pre, *next;
+        ListNode(int k, int v){
+            key = k;
+            val = v;
+            freq = 1;
+        }
+    };
+    unordered_map<int, ListNode*> freq_to_dummy;
+    unordered_map<int, ListNode*> key_to_Node;
+    int capacity;
+    int min_freq;
+    // 获取key对应节点的value
+    // 如果不存在，返回nullptr
+    // 如果存在，则将key从原来的频次链表中删除，删除时需要注意如果当前节点是原频次链表的最后一个节点，需要删除整个频次链表，并delete对应的dummy节点，将min_freq++
+    // 然后将当前节点插入到新的频次链表的头部，并返回对应node的节点
+    ListNode* get_node(int key){
+        auto it = key_to_Node.find(key);
+        if(it == key_to_Node.end()){
+            return nullptr;
+        }
+        ListNode* node = it->second;
+        remove_node(node);
+        ListNode* now_dummy = freq_to_dummy[node->freq];
+        if(now_dummy->pre == now_dummy){
+            freq_to_dummy.erase(node->freq);
+            delete now_dummy;
+            if(min_freq == node->freq){
+                min_freq++;
+            }
+        }
+        push_front(++node->freq, node);
+        return node;
+    }
+    // 当push_front时，需要判断是否需要新建一个新的链表
+    ListNode* new_list(){
+        ListNode *dummy = new ListNode(0, 0);
+        dummy->next = dummy;
+        dummy->pre = dummy;
+        return dummy;
+    }
+    // 向当前freq的链表的头部插入节点
+    void push_front(int freq, ListNode* node){
+        auto it = freq_to_dummy.find(freq);
+        ListNode *now_dummy;
+        if(it == freq_to_dummy.end()){
+            auto new_dummy = new_list();
+            freq_to_dummy[freq] = new_dummy;
+        }
+        now_dummy = freq_to_dummy[freq];
+        node->pre = now_dummy;
+        node->next = now_dummy->next;
+        node->next->pre = node;
+        node->pre->next = node;
+    }
+    // 从链表中逻辑删除节点
+    void remove_node(ListNode* node){
+        node->pre->next = node->next;
+        node->next->pre = node->pre;
+    }
+public:
+    LFUCache(int capacity) {
+        this->capacity = capacity;
+    }
+    
+    int get(int key) {
+        auto node = get_node(key);
+        return node == nullptr ? -1 : node->val;
+    }
+    // put时如果存在，则直接更新value，返回
+    // 如果不存在，则判断是否需要淘汰，如果当前节点总数已经等于capacity，则表示需要淘汰
+    // 淘汰首先根据min_freq找到对应的链表头节点，然后删除该节点的pre(因为在get_node的逻辑中保证频次链表中只有一个dummy节点时，整个频次会被删除，所以dummy的pre一定是存在的)，如果删除后链表只有一个dummy，则删除该链表
+    // 最后由于新插入的节点freq都为1，所以更新min_freq为1，然后插入freq为1的链表的头部
+    void put(int key, int value) {
+        auto node = get_node(key);
+        if(node != nullptr){
+            node->val = value;
+            return;
+        }
+        if(key_to_Node.size() == capacity){
+            auto dummy = freq_to_dummy[min_freq];
+            auto to_del_node = dummy->pre;
+            key_to_Node.erase(to_del_node->key);
+            remove_node(to_del_node);
+            delete to_del_node;
+            if(dummy->pre == dummy){
+                freq_to_dummy.erase(min_freq);
+                delete dummy;
+            }
+        }
+        key_to_Node[key] = node = new ListNode(key, value);
+        push_front(1, node);
+        min_freq = 1;
+    }
+};
+```
