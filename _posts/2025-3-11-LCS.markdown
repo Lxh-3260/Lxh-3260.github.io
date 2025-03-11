@@ -12,7 +12,7 @@ tags: [Dynamic Programming, C++] # add tag
 最长公共子串（Longest Common Substring）与最长公共子序列（Longest Common Subsequence）的区别： 子串要求在原字符串中是连续的，而子序列则只需保持相对顺序，并不要求连续。
 
 ## 最长公共子串
-```C++
+```c++
 /*
     dp[i][j] 表示选s1第i个字符和s2第j个字符的公共子串长度
     状态转移方程：
@@ -46,7 +46,7 @@ int LCSSubstring(string s1, string s2) {
 ```
 
 ## 最长公共子序列
-```C++
+```c++
 /*
     dp[i][j] 表示s1前i个字符和s2前j个字符的最长公共子序列长度
         状态转移方程：
